@@ -36,5 +36,10 @@ public partial class App : Application
                 "WARP not found", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.ToString(), "Startup error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Shutdown(1);
+        }
     }
 }
