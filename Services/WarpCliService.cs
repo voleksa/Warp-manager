@@ -42,7 +42,7 @@ public class WarpCliService : IWarpCliService
     private static List<string> ParseList(string output) =>
         output.Split('\n', StringSplitOptions.RemoveEmptyEntries)
               .Select(l => l.Trim().Split(' ', 2)[0])   // strip trailing metadata like "(CLI exclude)"
-              .Where(l => l.Length > 0)
+              .Where(l => l.Contains('.') || l.Contains(':'))  // skip header lines like "Excluded"
               .ToList();
 
     public async Task<WarpStatus> GetStatusAsync()

@@ -13,6 +13,27 @@
     <Window.Resources>
         <conv:StatusToBrushConverter  x:Key="StatusToBrush"/>
         <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
+
+        <Style x:Key="RemoveItemButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Content" Value="✕"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="StretchListBox" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="8,4"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid Margin="16">
@@ -64,6 +85,7 @@
                     </TextBlock>
                 </TabItem.Header>
                 <ListBox ItemsSource="{Binding IpExclusions}"
+                         Style="{StaticResource StretchListBox}"
                          Margin="0,4,0,0"
                          MinHeight="140">
                     <ListBox.ItemTemplate>
@@ -75,10 +97,8 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding Value}" VerticalAlignment="Center"/>
                                 <Button Grid.Column="1"
-                                        Content="Remove"
-                                        Command="{Binding RemoveCommand}"
-                                        Padding="8,2"
-                                        Margin="8,0,0,0"/>
+                                        Style="{StaticResource RemoveItemButton}"
+                                        Command="{Binding RemoveCommand}"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -95,6 +115,7 @@
                     </TextBlock>
                 </TabItem.Header>
                 <ListBox ItemsSource="{Binding HostExclusions}"
+                         Style="{StaticResource StretchListBox}"
                          Margin="0,4,0,0"
                          MinHeight="140">
                     <ListBox.ItemTemplate>
@@ -106,10 +127,8 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding Value}" VerticalAlignment="Center"/>
                                 <Button Grid.Column="1"
-                                        Content="Remove"
-                                        Command="{Binding RemoveCommand}"
-                                        Padding="8,2"
-                                        Margin="8,0,0,0"/>
+                                        Style="{StaticResource RemoveItemButton}"
+                                        Command="{Binding RemoveCommand}"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
