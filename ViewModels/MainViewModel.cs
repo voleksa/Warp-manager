@@ -22,6 +22,7 @@ public partial class MainViewModel : ObservableObject
     public string StatusText => Status switch
     {
         WarpStatus.Connected         => "Connected",
+        WarpStatus.Connecting        => "Connecting...",
         WarpStatus.Disconnected      => "Disconnected",
         WarpStatus.ServiceNotRunning => "Service offline",
         _                            => "Unknown",
@@ -61,8 +62,15 @@ public partial class MainViewModel : ObservableObject
 
             if (!r.Success)
                 ShowError(r.Error);
-            else
+
+            await RefreshStatusAsync();
+
+            var deadline = DateTime.UtcNow.AddSeconds(30);
+            while (Status == WarpStatus.Connecting && DateTime.UtcNow < deadline)
+            {
+                await Task.Delay(2000);
                 await RefreshStatusAsync();
+            }
         }
         finally { IsBusy = false; }
     }

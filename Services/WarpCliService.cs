@@ -49,8 +49,9 @@ public class WarpCliService : IWarpCliService
     {
         var r = await RunAsync("status");
         if (!r.Success) return WarpStatus.ServiceNotRunning;
-        if (r.Output.Contains("Connected",    StringComparison.OrdinalIgnoreCase)) return WarpStatus.Connected;
         if (r.Output.Contains("Disconnected", StringComparison.OrdinalIgnoreCase)) return WarpStatus.Disconnected;
+        if (r.Output.Contains("Connecting",   StringComparison.OrdinalIgnoreCase)) return WarpStatus.Connecting;
+        if (r.Output.Contains("Connected",    StringComparison.OrdinalIgnoreCase)) return WarpStatus.Connected;
         return WarpStatus.Unknown;
     }
 

@@ -19,4 +19,4 @@ public interface IWarpCliService
     Task<WarpResult>   RemoveAllHostExclusionsAsync();
 }
 
-public enum WarpStatus { Connected, Disconnected, ServiceNotRunning, Unknown }
+public enum WarpStatus { Connected, Connecting, Disconnected, ServiceNotRunning, Unknown }

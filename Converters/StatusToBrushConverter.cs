@@ -11,6 +11,7 @@ public class StatusToBrushConverter : IValueConverter
         value is WarpStatus s ? s switch
         {
             WarpStatus.Connected        => Brushes.LimeGreen,
+            WarpStatus.Connecting       => Brushes.Gold,
             WarpStatus.Disconnected     => Brushes.OrangeRed,
             WarpStatus.ServiceNotRunning=> Brushes.Gray,
             _                           => Brushes.Gray,
