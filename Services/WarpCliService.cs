@@ -1,13 +1,65 @@
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Win32;
 using WarpManager.Models;
 
 namespace WarpManager.Services;
 
 public class WarpCliService : IWarpCliService
 {
-    private const string CliPath =
-        @"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe";
+    private static readonly string CliPath = FindCliPath();
+
+    private static string FindCliPath()
+    {
+        // 1. Dedicated registry key written by the WARP installer
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Cloudflare\Cloudflare WARP");
+            if (key?.GetValue("InstallPath") is string installPath)
+            {
+                var candidate = Path.Combine(installPath, "warp-cli.exe");
+                if (File.Exists(candidate)) return candidate;
+            }
+        }
+        catch { }
+
+        // 2. Windows Uninstall entries (covers both 64-bit and 32-bit installer registrations)
+        foreach (var hive in new[]
+        {
+            @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+            @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall",
+        })
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(hive);
+                if (key == null) continue;
+                foreach (var name in key.GetSubKeyNames())
+                {
+                    using var entry = key.OpenSubKey(name);
+                    if (entry?.GetValue("DisplayName") is string display &&
+                        display.Contains("Cloudflare WARP", StringComparison.OrdinalIgnoreCase) &&
+                        entry.GetValue("InstallLocation") is string location)
+                    {
+                        var candidate = Path.Combine(location, "warp-cli.exe");
+                        if (File.Exists(candidate)) return candidate;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        // 3. Known install paths as a last resort
+        string[] fallbacks =
+        [
+            @"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe",
+            @"C:\Program Files (x86)\Cloudflare\Cloudflare WARP\warp-cli.exe",
+        ];
+        foreach (var path in fallbacks)
+            if (File.Exists(path)) return path;
+
+        return fallbacks[0]; // RunAsync will throw FileNotFoundException if missing
+    }
 
     private async Task<WarpResult> RunAsync(params string[] args)
     {
