@@ -15,8 +15,7 @@ Latest version of Cloudeflare WARP(Cloudeflare One Client) does not support addi
 ## Requirements
 
 - Windows 10/11
-- [Cloudflare WARP](https://1.1.1.1/) installed at its default path:  
-  `C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe`
+- [Cloudflare WARP](https://1.1.1.1/)
 - .NET 8 SDK (build only; the published exe is self-contained)
 
 ## Build & Run
