@@ -55,11 +55,17 @@ Converters/          — StatusToBrushConverter, BoolToVisibilityConverter
 ```
 
 
+## Disclaimer
+
+This project is an unofficial third-party tool and is not affiliated with, endorsed by,
+or sponsored by Cloudflare, Inc. Cloudflare and Cloudflare WARP are trademarks of
+Cloudflare, Inc. All product names, logos, and brands are property of their respective owners.
+
 ## License
 
 MIT License
 
-Copyright (c) [2026] [Route7]
+Copyright (c) [2026] [WARP Manager]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
